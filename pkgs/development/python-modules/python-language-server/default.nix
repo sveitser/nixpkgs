@@ -2,8 +2,8 @@
 , jedi, mccabe, future, futures, rope, tox
 , yapf, pycodestyle, pluggy, pyflakes
 , json-rpc, pydocstyle
-, autopep8, pytest, mock
-, fetchPypi
+, autopep8, pytest, mock, pytestcov
+, fetchFromGitHub
 , buildPythonPackage
 , pythonOlder
 , configparser ? null
@@ -13,22 +13,12 @@ buildPythonPackage rec {
   pname = "python-language-server";
   version = "0.17.1";
 
-  src = fetchPypi {
-    inherit pname version;
-    sha256 = "1hi5npffps5k1gwhgils1bbjhn78i1q4jzhh1v2kqjmc2ac4qmqf";
+  src = fetchFromGitHub {
+    owner = "palantir";
+    repo = pname;
+    rev = version;
+    sha256 = "1k11b5k9lpl43x5av3xs9s4r8n5g8yilwg1r171bkvblx69z3dsd";
   };
-
-  postPatch = stdenv.lib.optionalString (!pythonOlder "3.0") ''
-    substituteInPlace setup.py --replace "packages=find_packages(exclude=['contrib', 'docs', 'test'])" "packages=find_packages(exclude=['contrib', 'docs'])"
-    cat > test/__init__.py <<EOF
-# Copyright 2017 Palantir Technologies, Inc.
-import pytest
-from pyls import IS_WIN
-
-unix_only = pytest.mark.skipif(IS_WIN, reason="Unix only")
-windows_only = pytest.mark.skipif(not IS_WIN, reason="Windows only")
-EOF
-  '';
 
   propagatedBuildInputs = [
     future
@@ -43,10 +33,10 @@ EOF
     rope
   ] ++ stdenv.lib.optionals (pythonOlder "3.0") [ configparser futures ];
 
-  checkInputs = [ autopep8 mock pytest ];
+  checkInputs = [ autopep8 mock pytest pytestcov ];
 
   checkPhase = ''
-    py.test test
+    HOME=$(mktemp -d) py.test
   '';
 
   meta = with stdenv.lib; {
@@ -55,4 +45,3 @@ EOF
     license = licenses.mit;
   };
 }
-
