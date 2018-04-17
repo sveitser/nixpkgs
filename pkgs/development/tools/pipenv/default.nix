@@ -1,12 +1,11 @@
 { stdenv, python3Packages, pew }:
 with python3Packages; buildPythonApplication rec {
-    name = "${pname}-${version}";
     pname = "pipenv";
-    version = "11.9.0";
+    version = "11.10.0";
 
     src = fetchPypi {
       inherit pname version;
-      sha256 = "0s291ayiszqg4ia0fiya2g3ra6m6bf7mrds1c4dscz71azxm4g3v";
+      sha256 = "0v6w9bm2m5iyp0376s5hz1ghq0hcqdjn0v1yjykwsmvp6kjv5dns";
     };
 
     LC_ALL = "en_US.UTF-8";
