@@ -5,6 +5,7 @@
 , sphinx
 , numpydoc
 , pytest
+, pytest-timeout
 , python-lz4
 }:
 
@@ -38,8 +39,10 @@ buildPythonPackage rec {
   checkInputs = [ sphinx numpydoc pytest ];
   propagatedBuildInputs = [ python-lz4 ];
 
+  # lz4 compression test breaks when comparing two versions where the first one
+  # is prefixed with a "v"
   checkPhase = ''
-    py.test joblib
+    py.test joblib -k 'not test_lz4_compression'
   '';
 
   meta = {
