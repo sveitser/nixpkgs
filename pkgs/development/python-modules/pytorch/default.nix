@@ -79,21 +79,21 @@ in buildPythonPackage rec {
 
   nativeBuildInputs = [
      cmake
+     numpy.blas
      utillinux
      which
-  ];
-
-  buildInputs = [
-     numpy.blas
   ] ++ lib.optionals cudaSupport [ cudatoolkit_joined cudnn ]
     ++ lib.optionals stdenv.isLinux [ numactl ];
 
   propagatedBuildInputs = [
     cffi
+    numpy.blas
     numpy
     pyyaml
-  ] ++ lib.optional (pythonOlder "3.5") typing;
+  ] ++ lib.optional (pythonOlder "3.5") typing
+    ++ lib.optionals cudaSupport [ cudatoolkit_joined cudnn ];
 
+  doCheck = false;
   checkInputs = [ hypothesis ];
   checkPhase = ''
     ${cudaStubEnv}python test/run_test.py --exclude dataloader sparse torch utils thd_distributed distributed cpp_extensions
