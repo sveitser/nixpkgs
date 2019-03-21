@@ -1,15 +1,16 @@
 diff --git a/sounddevice.py b/sounddevice.py
-index f03476c..5745b6e 100644
+index a106a3c..6f265a0 100644
 --- a/sounddevice.py
 +++ b/sounddevice.py
-@@ -58,28 +58,7 @@ from ctypes.util import find_library as _find_library
+@@ -58,29 +58,7 @@ from ctypes.util import find_library as _find_library
  from _sounddevice import ffi as _ffi
-
-
+ 
+ 
 -try:
 -    for _libname in (
 -            'portaudio',  # Default name on POSIX systems
 -            'bin\\libportaudio-2.dll',  # DLL from conda-forge
+-            'lib/libportaudio.dylib',  # dylib from anaconda
 -            ):
 -        _libname = _find_library(_libname)
 -        if _libname is not None:
@@ -29,6 +30,6 @@ index f03476c..5745b6e 100644
 -        next(iter(_sounddevice_data.__path__)), 'portaudio-binaries', _libname)
 -    _lib = _ffi.dlopen(_libname)
 +_lib = _ffi.dlopen('@portaudio@')
-
+ 
  _sampleformats = {
      'float32': _lib.paFloat32,
