@@ -107,7 +107,7 @@ let
     "LD_LIBRARY_PATH=${cudaStub}\${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH ";
 
 in buildPythonPackage rec {
-  version = "1.4.0";
+  version = "1.5.0";
   pname = "pytorch";
   disabled = !isPy3k;
 
@@ -121,7 +121,7 @@ in buildPythonPackage rec {
     repo   = "pytorch";
     rev    = "f515d87296bafe8fd8cf510fa5cf345a09a100ba";
     fetchSubmodules = true;
-    sha256 = "01jd0wzq2f794x2qhiq1l16bbfjdsk2xrq44x3wkwvh1nn93p7na";
+    sha256 = "0xvl9099m3lkj22975352nf17kf0s870b5s8pwbayfqx9pdbrscf";
   };
 
   preConfigure = lib.optionalString cudaSupport ''
