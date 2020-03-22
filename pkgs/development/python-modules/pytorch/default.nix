@@ -121,7 +121,7 @@ in buildPythonPackage rec {
     repo   = "pytorch";
     rev    = "f515d87296bafe8fd8cf510fa5cf345a09a100ba";
     fetchSubmodules = true;
-    sha256 = "1gdglwrky4zq7w2zp9srrdqz8x2j89sv4n91x2m4c6b4fbj52gbr";
+    sha256 = "01jd0wzq2f794x2qhiq1l16bbfjdsk2xrq44x3wkwvh1nn93p7na";
   };
 
   preConfigure = lib.optionalString cudaSupport ''
