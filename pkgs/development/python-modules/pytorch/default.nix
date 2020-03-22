@@ -119,9 +119,9 @@ in buildPythonPackage rec {
   src = fetchFromGitHub {
     owner  = "pytorch";
     repo   = "pytorch";
-    rev    = "v${version}";
+    rev    = "f515d87296bafe8fd8cf510fa5cf345a09a100ba";
     fetchSubmodules = true;
-    sha256 = "1gdglwrky4zq7w2zp9srrdqz8x2j89sv4n91x2m4c6b4fbj52gsr";
+    sha256 = "1gdglwrky4zq7w2zp9srrdqz8x2j89sv4n91x2m4c6b4fbj52gbr";
   };
 
   preConfigure = lib.optionalString cudaSupport ''
@@ -130,24 +130,6 @@ in buildPythonPackage rec {
   '' + lib.optionalString (cudaSupport && cudnn != null) ''
     export CUDNN_INCLUDE_DIR=${cudnn}/include
   '';
-
-  patches = [
-    # Prevents a race condition which would be introduced by pull 30333.
-    # See https://github.com/pytorch/pytorch/issues/32277
-    # Can be removed >1.4.0.
-    (fetchpatch {
-      url = "https://patch-diff.githubusercontent.com/raw/pytorch/pytorch/pull/30332.patch";
-      sha256 = "1v9dwbhz3rdxcx6sz8y8j9n3bj6nqs78b1r8yg89yc15n6l4cqx2";
-    })
-
-    # Fixes errors with gcc-9 compilation. Cherry-picked on advice from ezyang.
-    # See https://github.com/pytorch/pytorch/issues/32277
-    # Can be removed >1.4.0.
-    (fetchpatch {
-      url = "https://patch-diff.githubusercontent.com/raw/pytorch/pytorch/pull/30333.patch";
-      sha256 = "139413fl37h2fnil0cv99a67mqqnsh02k74b92by1qyr6pcfyg3q";
-    })
-  ];
 
   # Use pytorch's custom configurations
   dontUseCmakeConfigure = true;
