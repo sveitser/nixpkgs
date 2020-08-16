@@ -7816,6 +7816,8 @@ in {
 
   rxv     = callPackage ../development/python-modules/rxv     { };
 
+  pooch = callPackage ../development/python-modules/pooch {};
+
 });
 
 in fix' (extends overrides packages)
