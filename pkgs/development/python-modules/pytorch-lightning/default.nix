@@ -2,16 +2,18 @@
 , buildPythonPackage
 , fetchFromGitHub
 , isPy27
-, future
 , pytestCheckHook
+, fsspec
+, future
 , pytorch
 , pyyaml
 , tensorflow-tensorboard
-, tqdm }:
+, tqdm
+}:
 
 buildPythonPackage rec {
   pname = "pytorch-lightning";
-  version = "0.8.5";
+  version = "1.1.1";
 
   disabled = isPy27;
 
@@ -19,10 +21,11 @@ buildPythonPackage rec {
     owner = "PyTorchLightning";
     repo = pname;
     rev = version;
-    sha256 = "12zhq4pnfcwbgcx7cs99c751gp3w0ysaf5ykv2lv8f4i360w3r5a";
+    sha256 = "02cdmpfc3978hvzysylwwx24rv92z9xp61dvqdy3f1pjra54pbrq";
   };
 
   propagatedBuildInputs = [
+    fsspec
     future
     pytorch
     pyyaml
@@ -30,7 +33,13 @@ buildPythonPackage rec {
     tqdm
   ];
 
+  # Can't use tensorflow-tensorboard_2 because pytorch depends on tensorflow-tensorboard_1
+  patchPhase = ''
+    sed -i 's/tensorboard>=.*/tensorboard/' requirements.txt
+  '';
+
   checkInputs = [ pytestCheckHook ];
+
   # Some packages are not in NixPkgs; other tests try to build distributed
   # models, which doesn't work in the sandbox.
   doCheck = false;
