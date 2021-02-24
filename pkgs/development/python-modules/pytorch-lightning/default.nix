@@ -3,6 +3,7 @@
 , fetchFromGitHub
 , isPy27
 , pytestCheckHook
+, aiohttp
 , fsspec
 , future
 , pytorch
@@ -13,7 +14,7 @@
 
 buildPythonPackage rec {
   pname = "pytorch-lightning";
-  version = "1.1.1";
+  version = "1.2.0";
 
   disabled = isPy27;
 
@@ -21,10 +22,11 @@ buildPythonPackage rec {
     owner = "PyTorchLightning";
     repo = pname;
     rev = version;
-    sha256 = "02cdmpfc3978hvzysylwwx24rv92z9xp61dvqdy3f1pjra54pbrq";
+    sha256 = "061b9ra6c4p9n4ngqg2ksg9826h5akprkv41bkbypdi1jgywciv5";
   };
 
   propagatedBuildInputs = [
+    aiohttp
     fsspec
     future
     pytorch
@@ -35,7 +37,8 @@ buildPythonPackage rec {
 
   # Can't use tensorflow-tensorboard_2 because pytorch depends on tensorflow-tensorboard_1
   patchPhase = ''
-    sed -i 's/tensorboard>=.*/tensorboard/' requirements.txt
+    sed -i 's/tensorboard.*/tensorboard/' requirements.txt
+    sed -i 's/PyYAML.*/PyYAML/' requirements.txt
   '';
 
   checkInputs = [ pytestCheckHook ];
